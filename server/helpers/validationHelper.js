@@ -68,10 +68,8 @@ const createSongValidation = (data) => {
 
 module.exports = {
   idValidation,
-
   createUserValidation,
   updateUserValidation,
-
   createPlaylistValidation,
   createSongValidation,
 };
