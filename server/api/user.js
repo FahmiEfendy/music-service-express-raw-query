@@ -44,6 +44,29 @@ const createUser = async (req, res) => {
   }
 };
 
+const changePassword = async (req, res) => {
+  const { id } = req.params;
+  const { password } = req.body;
+
+  const objectData = {
+    userId: id,
+    password,
+  };
+
+  try {
+    validationHelper.idValidation(req.params);
+    validationHelper.updateUserValidation(req.body);
+
+    const response = await userHelper.patchChangePassword(objectData);
+
+    res
+      .status(200)
+      .send({ message: "Successfully Update a User", data: response });
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
+};
+
 const removeUser = async (req, res) => {
   try {
     validationHelper.idValidation(req.params);
@@ -59,6 +82,7 @@ const removeUser = async (req, res) => {
 Router.get("/", userList);
 Router.get("/detail/:id", userDetail);
 Router.post("/create", createUser);
+Router.patch("/change-password/:id", changePassword);
 Router.delete("/remove/:id", removeUser);
 
 module.exports = Router;

@@ -42,6 +42,16 @@ const postCreateUser = async (objectData) => {
   }
 };
 
+const patchChangePassword = async (objectData) => {
+  try {
+    const data = await usersDatabase.changePassword(objectData);
+
+    return data;
+  } catch (err) {
+    return err.message;
+  }
+};
+
 const deleteRemoveUser = async (objectData) => {
   const { id } = objectData;
 
@@ -56,5 +66,6 @@ module.exports = {
   getUserList,
   getUserDetail,
   postCreateUser,
+  patchChangePassword,
   deleteRemoveUser,
 };

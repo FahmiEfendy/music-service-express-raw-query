@@ -26,6 +26,18 @@ const createUserValidation = (data) => {
   }
 };
 
+const updateUserValidation = (data) => {
+  const schema = Joi.object({
+    password: Joi.string()
+      .required()
+      .description("User password, i.e. JohnDoe456"),
+  });
+
+  if (schema.validate(data).error) {
+    throw Boom.badRequest(schema.validate(data).error);
+  }
+};
+
 const createPlaylistValidation = (data) => {
   const schema = Joi.object({
     name: Joi.string()
@@ -56,7 +68,10 @@ const createSongValidation = (data) => {
 
 module.exports = {
   idValidation,
+
   createUserValidation,
+  updateUserValidation,
+
   createPlaylistValidation,
   createSongValidation,
 };

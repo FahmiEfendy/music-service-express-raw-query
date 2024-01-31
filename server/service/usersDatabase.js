@@ -93,6 +93,37 @@ const createUser = async (objectData) => {
   }
 };
 
+const changePassword = async (objectData) => {
+  const { userId, password } = objectData;
+
+  try {
+    const poolConnection = await ConnectionPool.getConnection();
+
+    await poolConnection.query(
+      `
+      UPDATE 
+        ${USER_TABLE}
+      SET 
+        password = '${password}'
+      WHERE
+        user_id = '${userId}'
+      `
+    );
+
+    await poolConnection.connection.release();
+
+    console.log([fileName, "Patch Change User Password", "INFO"]);
+
+    return Promise.resolve([]);
+  } catch (err) {
+    console.log([fileName, "Patch Change User Password", "ERROR"], {
+      message: { info: `${err}` },
+    });
+
+    return Promise.resolve([]);
+  }
+};
+
 const removeUser = async (id) => {
   try {
     const poolConnection = await ConnectionPool.getConnection();
@@ -118,6 +149,7 @@ const removeUser = async (id) => {
 module.exports = {
   getAllUsersData,
   createUser,
+  changePassword,
   removeUser,
   getUserDetailData,
 };
