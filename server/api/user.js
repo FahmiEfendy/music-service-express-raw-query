@@ -14,6 +14,19 @@ const userList = async (req, res) => {
   }
 };
 
+const userDetail = async (req, res) => {
+  try {
+    const response = await userHelper.getUserDetail(req.params);
+
+    res.status(200).send({
+      message: `Successfully Get User Detail with id of ${req.params.id}`,
+      data: response,
+    });
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
+};
+
 const createUser = async (req, res) => {
   try {
     const response = await userHelper.postCreateUser(req.body);
@@ -36,22 +49,9 @@ const removeUser = async (req, res) => {
   }
 };
 
-const userDetail = async (req, res) => {
-  try {
-    const response = await userHelper.getUserDetail(req.params);
-
-    res.status(200).send({
-      message: `Successfully Get User Detail with id of ${req.params.id}`,
-      data: response,
-    });
-  } catch (err) {
-    res.status(500).send({ message: err.message });
-  }
-};
-
 Router.get("/", userList);
+Router.get("/detail/:id", userDetail);
 Router.post("/create", createUser);
 Router.delete("/remove/:id", removeUser);
-Router.get("/:id", userDetail);
 
 module.exports = Router;

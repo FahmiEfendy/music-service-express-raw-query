@@ -10,6 +10,18 @@ const getUserList = async () => {
   }
 };
 
+const getUserDetail = async (objectData) => {
+  const { id } = objectData;
+
+  try {
+    const data = await usersDatabase.getUserDetailData(id);
+
+    return data;
+  } catch (err) {
+    return err.message;
+  }
+};
+
 const postCreateUser = async (objectData) => {
   const { username, password } = objectData;
 
@@ -40,21 +52,9 @@ const deleteRemoveUser = async (objectData) => {
   }
 };
 
-const getUserDetail = async (objectData) => {
-  const { id } = objectData;
-
-  try {
-    const data = await usersDatabase.getUserDetailData(id);
-
-    return data;
-  } catch (err) {
-    return err.message;
-  }
-};
-
 module.exports = {
   getUserList,
+  getUserDetail,
   postCreateUser,
   deleteRemoveUser,
-  getUserDetail,
 };

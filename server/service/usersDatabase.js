@@ -26,6 +26,30 @@ const getAllUsersData = async () => {
   }
 };
 
+const getUserDetailData = async (id) => {
+  try {
+    const poolConnection = await ConnectionPool.getConnection();
+
+    const query = await poolConnection.query(
+      `SELECT * FROM ${USER_TABLE} WHERE user_id = '${id}'`
+    );
+
+    await poolConnection.connection.release();
+
+    const result = __constructQueryResult(query);
+
+    console.log([fileName, "GET User Detail", "INFO"]);
+
+    return Promise.resolve(result);
+  } catch (err) {
+    console.log([fileName, "GET User Detail", "ERROR"], {
+      message: { info: `${err}` },
+    });
+
+    return Promise.resolve([]);
+  }
+};
+
 const createUser = async (objectData) => {
   try {
     const { user_id, username, password } = objectData;
@@ -65,30 +89,6 @@ const removeUser = async (id) => {
     return Promise.resolve([]);
   } catch (err) {
     console.log([fileName, "DELETE Remove User", "ERROR"], {
-      message: { info: `${err}` },
-    });
-
-    return Promise.resolve([]);
-  }
-};
-
-const getUserDetailData = async (id) => {
-  try {
-    const poolConnection = await ConnectionPool.getConnection();
-
-    const query = await poolConnection.query(
-      `SELECT * FROM ${USER_TABLE} WHERE user_id = '${id}'`
-    );
-
-    await poolConnection.connection.release();
-
-    const result = __constructQueryResult(query);
-
-    console.log([fileName, "GET User Detail", "INFO"]);
-
-    return Promise.resolve(result);
-  } catch (err) {
-    console.log([fileName, "GET User Detail", "ERROR"], {
       message: { info: `${err}` },
     });
 
