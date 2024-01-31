@@ -1,14 +1,17 @@
 const dotenv = require("dotenv");
 const express = require("express");
 
+const user = require("./server/api/user");
+const playlist = require("./server/api/playlist");
+const song = require("./server/api/song");
+
 require("dotenv").config;
 
 const app = express();
 const port = process.env.PORT || 8080;
 
-const user = require("./server/api/user");
-const playlist = require("./server/api/playlist");
-const song = require("./server/api/song");
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.get("/", async (req, res) => {
   res.send("Hello!");

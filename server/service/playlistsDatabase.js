@@ -2,13 +2,13 @@ const { ConnectionPool, __constructQueryResult } = require("./database");
 
 const fileName = "server/service/playlistsDatabase.js";
 
-TABLE = "Playlists";
+PLAYLIST_TABLE = "Playlists";
 
 const getAllPlaylistsData = async () => {
   try {
     const poolConnection = await ConnectionPool.getConnection();
 
-    const query = await poolConnection.query(`SELECT * FROM ${TABLE}`);
+    const query = await poolConnection.query(`SELECT * FROM ${PLAYLIST_TABLE}`);
 
     await poolConnection.connection.release();
 
