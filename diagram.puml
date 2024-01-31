@@ -1,0 +1,36 @@
+@startuml MusicService
+
+entity Users {
+    user_id: number (PK)
+    username: text
+    password: text
+}
+
+entity Playlists {
+    playlist_id: number (PK)
+    name: text
+    total_songs: number
+    ---
+    user_id: number (FK)
+}
+
+entity Songs {
+    song_id: number (PK)
+    title: text
+    singer: text
+    genre: text
+    duration: text
+}
+
+entity PlaylistsSongs (Junction Table){
+    playlist_id: (FK)
+    song_id: (FK)
+}
+
+
+' One To Many
+Users ||--o{ Playlists  
+' Many To Many
+Songs }|--o{ Playlists
+
+@enduml
