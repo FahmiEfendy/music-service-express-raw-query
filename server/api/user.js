@@ -1,6 +1,7 @@
 const Router = require("express").Router();
 
 const userHelper = require("../helpers/userHelper");
+const validationHelper = require("../helpers/validationHelper");
 
 const userList = async (req, res) => {
   try {
@@ -16,6 +17,8 @@ const userList = async (req, res) => {
 
 const userDetail = async (req, res) => {
   try {
+    validationHelper.idValidation(req.params);
+
     const response = await userHelper.getUserDetail(req.params);
 
     res.status(200).send({
@@ -29,6 +32,8 @@ const userDetail = async (req, res) => {
 
 const createUser = async (req, res) => {
   try {
+    validationHelper.createUserValidation(req.body);
+
     const response = await userHelper.postCreateUser(req.body);
 
     res
@@ -41,6 +46,8 @@ const createUser = async (req, res) => {
 
 const removeUser = async (req, res) => {
   try {
+    validationHelper.idValidation(req.params);
+
     await userHelper.deleteRemoveUser(req.params);
 
     res.status(200).send({ message: "Successfully Deleted a User" });

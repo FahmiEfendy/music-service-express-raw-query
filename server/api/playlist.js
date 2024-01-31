@@ -1,6 +1,7 @@
 const Router = require("express").Router();
 
 const playlistHelper = require("../helpers/playlistHelper");
+const validationHelper = require("../helpers/validationHelper");
 
 const playlistList = async (req, res) => {
   try {
@@ -16,6 +17,8 @@ const playlistList = async (req, res) => {
 
 const playlistDetail = async (req, res) => {
   try {
+    validationHelper.idValidation(req.params);
+
     const response = await playlistHelper.getPlaylistDetail(req.params);
 
     res.status(200).send({
@@ -29,6 +32,8 @@ const playlistDetail = async (req, res) => {
 
 const createPlaylist = async (req, res) => {
   try {
+    validationHelper.createPlaylistValidation(req.body);
+
     const response = await playlistHelper.postCreatePlaylist(req.body);
 
     res
@@ -41,6 +46,8 @@ const createPlaylist = async (req, res) => {
 
 const removePlaylist = async (req, res) => {
   try {
+    validationHelper.idValidation(req.params);
+
     await playlistHelper.deleteRemovePlaylist(req.params);
 
     res.status(200).send({ message: "Successfully Deleted a Playlist" });
