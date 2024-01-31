@@ -3,6 +3,7 @@ const { ConnectionPool, __constructQueryResult } = require("./database");
 const fileName = "server/service/usersDatabase.js";
 
 USER_TABLE = "Users";
+PLAYLIST_TABLE = "Playlists";
 
 const getAllUsersData = async () => {
   try {
@@ -31,16 +32,34 @@ const getUserDetailData = async (id) => {
     const poolConnection = await ConnectionPool.getConnection();
 
     const query = await poolConnection.query(
-      `SELECT * FROM ${USER_TABLE} WHERE user_id = '${id}'`
+      `
+      SELECT 
+        u.user_id, 
+        u.username,
+        GROUP_CONCAT(p.name) AS playlists
+      FROM 
+        ${USER_TABLE} u
+      JOIN 
+        ${PLAYLIST_TABLE} p ON u.user_id = p.user_id
+      WHERE
+        u.user_id = '${id}'
+      GROUP BY
+        u.user_id, u.username
+      `
     );
 
     await poolConnection.connection.release();
 
     const result = __constructQueryResult(query);
 
+    const formattedResult = result.map((data) => ({
+      ...data,
+      playlists: data.playlists.split(","),
+    }));
+
     console.log([fileName, "GET User Detail", "INFO"]);
 
-    return Promise.resolve(result);
+    return Promise.resolve(formattedResult);
   } catch (err) {
     console.log([fileName, "GET User Detail", "ERROR"], {
       message: { info: `${err}` },
